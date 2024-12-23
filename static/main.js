@@ -586,6 +586,23 @@ function hideClass(name) {
       }
       // Reset the time clock.
       this.time = getTimeStamp();
+      
+      //get the score
+      const score = this.distanceMeter.getActualDistance(this.distanceRan);
+      fetch('/get_score', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ score: score })
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log('Success: score: ', data);
+      })
+      .catch((error) => {
+          console.error('Error:', error);
+      });
     },
     stop: function() {
       this.activated = false;
