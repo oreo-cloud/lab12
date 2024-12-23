@@ -625,3 +625,8 @@ html[subframe] body {
 #send_button:hover {
   opacity: 0.8;
 }
+
+.interstitial-wrapper {
+  transform: scale(1.5); /* 將整體畫布放大 1.5 倍 */
+  transform-origin: center; /* 以中心為基準進行放大 */
+}
