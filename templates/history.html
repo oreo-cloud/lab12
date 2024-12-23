@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>歷史紀錄</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f9;
+        display: flex;
+        flex-direction: column;
+      }
+
+      header {
+        background-color: #333;
+        color: white;
+        padding: 10px 20px;
+      }
+
+      nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      nav h1 {
+        font-size: 1.8rem;
+        margin: 0;
+      }
+      nav ul {
+        list-style: none;
+        display: flex;
+        padding: 0;
+        margin: 0;
+      }
+      nav ul li {
+        margin-left: 20px;
+      }
+      nav ul li a {
+        text-decoration: none;
+        color: white;
+        font-size: 1rem;
+        padding: 8px 12px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+      nav ul li a:hover {
+        background-color: #575757;
+      }
+
+      main {
+        width: 1000px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 1rem;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+      }
+      th {
+        background-color: #f4f4f9;
+      }
+
+      button, .button {
+        padding: 10px 20px;
+        margin-top: 20px;
+        background-color: #306daf;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(5px);
+      }
+      button:hover, .button:hover {
+        background-color: #0056b3;
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+      }
+      .input-group {
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .input-group label {
+        margin-right: 10px;
+        font-size: 1rem;
+      }
+      .input-group input {
+        flex: 1;
+        padding: 8px;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      .button-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+      }
+      #group-input {
+        width: 250px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <h1>Lab14</h1>
+        <ul>
+          <li><a href="/">開始遊戲</a></li>
+          <li><a href="/history">歷史紀錄</a></li>
+          <li><a href="/">排行榜</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <h2>歷史紀錄</h2>
+      <button id="refresh-button">刷新分數資訊</button>
+
+      <!-- 表格區域 -->
+      <table>
+        <thead>
+          <tr>
+            <th>次數</th>
+            <th>分數</th>
+            <th>時間</th>
+          </tr>
+        </thead>
+        <tbody id="Score-table-body">
+          <tr>
+            <td colspan="3">尚無資料</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="button-container">
+        <!-- 刷新按鈕 -->
+        
+
+        <!-- 組別輸入區域 -->
+        <div class="input-group">
+          <label for="group-input">班級組別：</label>
+          <input type="text" id="group-input" placeholder="輸入班級組別(如. 甲00 或 乙00)" />
+        </div>
+
+        <!-- 發送按鈕 -->
+        <div id="send_button" class="button" onclick="sendScore()">發送最高分數</div>
+      </div>
+    </main>
+
+    <script>
+      const tableBody = document.getElementById("Score-table-body");
+      const refreshButton = document.getElementById("refresh-button");
+      const groupInput = document.getElementById("group-input");
+
+      // 刷新表格內容
+      async function refreshScoreData() {
+        try {
+          const response = await fetch("/get_score_data");
+          if (!response.ok) {
+            throw new Error("無法獲取分數資訊");
+          }
+          const data = await response.json();
+          
+          // 清空表格
+          tableBody.innerHTML = "";
+
+          // 更新表格資料
+          if (data.length > 0) {
+            data.forEach((item) => {
+              const newRow = document.createElement("tr");
+
+              const idCell = document.createElement("td");
+              idCell.textContent = item[0];
+
+              const scoreCell = document.createElement("td");
+              scoreCell.textContent = item[1];
+
+              const timeCell = document.createElement("td");
+              timeCell.textContent = item[2];
+
+              newRow.appendChild(idCell);
+              newRow.appendChild(scoreCell);
+              newRow.appendChild(timeCell);
+
+              tableBody.appendChild(newRow);
+            });
+          } else {
+            // 如果沒有資料，顯示提示
+            tableBody.innerHTML = '<tr><td colspan="3">尚無資料</td></tr>';
+          }
+        } catch (error) {
+          console.error("刷新失敗:", error);
+          
+        }
+      }
+
+      // 發送分數資訊
+      function sendScore() {
+        const info = groupInput.value;
+        if (!info) {
+          alert("請輸入組別名稱");
+          return;
+        }
+
+        const class_info = info.charAt(0);
+        const group_info = info.substring(1);
+
+        if (class_info !== '甲' && class_info !== '乙') {
+            alert('請輸入正確的班級組別');
+            return;
+        }
+
+        // 跳出確認視窗
+        const userConfirmed = confirm(`你的班級組別為${class_info}班 第${group_info}組，是否正確`);
+        if (!userConfirmed) {
+            return; // 如果用戶選擇取消，則終止操作
+        }
+
+        fetch("/send_score", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ "class": class_info, "group": group_info}),
+        })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("發送失敗");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Success:", data);
+          if (data.status === "fail") {
+            if (data.score === -1) {
+              alert("資料庫中沒有內容。");
+            } else if (data.score === -2) {
+              alert("dino資料集不存在，請先玩至少一次遊戲");
+            } else if (data.score === -3) {
+              alert("排行榜連線失敗");
+            } else {
+              alert("你遇到媽祖拉!!");
+            }
+          } else if (data.status === "success") {
+            alert("分數發送成功！");
+          } else {
+            alert("你遇到媽祖拉!!");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("發送失敗，請稍後再試。");
+        });
+      }
+
+      // 點擊按鈕時刷新資料
+      refreshButton.addEventListener("click", refreshScoreData);
+      onload = refreshScoreData();
+    </script>
+  </body>
+</html>

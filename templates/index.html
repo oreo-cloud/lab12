@@ -6,18 +6,67 @@
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://nickglu86.github.io/google-chrome-dinosaur-game/">
     <meta property="og:image" content="https://nickglu86.github.io/google-chrome-dinosaur-game/dino.png">
-    <meta property="og:description" content="Google Chrome has a hidden T-Rex game only for offline mode. But now, you can enjoy it any time and on any device, but you gotta stay online!!!">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="https://nickglu86.github.io/google-chrome-dinosaur-game/">
-    <meta name="twitter:title" content="Check out the cool hidden game from Google Chrome!">
-    <meta name="twitter:description" content="Check out the cool hidden game from Google Chrome!">
-    <meta name="twitter:image:src" content="https://nickglu86.github.io/google-chrome-dinosaur-game/dino.png">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="{{ url_for('static', filename='main.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+      header {
+        background-color: #333;
+        color: white;
+        padding: 10px 20px;
+      }
+
+      nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      nav h1 {
+        color: white;
+        font-size: 1.8rem;
+        margin: 0;
+      }
+
+      nav ul {
+        list-style: none;
+        display: flex;
+        padding: 0;
+        margin: 0;
+      }
+
+      nav ul li {
+        margin-left: 20px;
+      }
+
+      nav ul li a {
+        text-decoration: none;
+        color: white;
+        font-size: 1rem;
+        padding: 8px 12px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+
+      nav ul li a:hover {
+        background-color: #575757;
+      }
+    </style>
   </head>
   <body id="t">
+    <header>
+    <nav>
+      <h1>Lab14</h1>
+      <ul>
+        <li><a href="/">開始遊戲</a></li>
+        <li><a href="/history">歷史紀錄</a></li>
+        <li><a href="/">排行榜</a></li>
+      </ul>
+    </nav>
+  </header>
     <script>
       window.fbAsyncInit = function() {
         FB.init({
@@ -69,7 +118,5 @@
       <script type="text/javascript">
         new Runner('.interstitial-wrapper');
       </script>
-
-      <div id="send_button" class="button" onclick="sendScore()">send highest score</div>
   </body>
 </html>
