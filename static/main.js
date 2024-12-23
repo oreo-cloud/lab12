@@ -183,7 +183,7 @@ function hideClass(name) {
    */
   Runner.keycodes = {
     JUMP: {
-      '38': 1,
+      // '38': 1,
       '32': 1
     }, // Up, spacebar
     DUCK: {
@@ -1857,3 +1857,19 @@ function hideClass(name) {
     }
   };
 })();
+
+function sendScore() {
+  fetch('/send_score', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      }
+  })
+  .then(response => response.json())
+  .then(data => {
+      console.log('Success:', data);
+  })
+  .catch((error) => {
+      console.error('Error:', error);
+  });
+}
