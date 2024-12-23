@@ -12,6 +12,8 @@
 
 using namespace std;
 
+#define threshold 495 // 請修改此數值
+
 #define BASE 200   // SPI介面設定
 #define SPI_CHAN 0 // 使用CH0
 
@@ -44,7 +46,7 @@ int main(void)
 
     while (1) {
         int x = analogRead(BASE + channel); // 讀取類比輸入
-        if (x > 495) {
+        if (x > threshold) {
             cout << "Jump" << count << endl ;
             Press();
             count++ ;
