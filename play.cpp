@@ -15,7 +15,7 @@ using namespace std;
 #define threshold 495 // 請修改此數值
 
 // 調整伺服馬達移動角度
-#define key_down 15
+#define key_down 30
 #define key_up 0
 
 #define BASE 200   // SPI介面設定
@@ -28,7 +28,6 @@ const int minPwm = 50;  // 對應 1ms 脈寬（50）
 const int maxPwm = 250; // 對應 2ms 脈寬（250）
 
 void Press() {
-    // angle 0~15
     int start_angle = press_up;
     int end_angle = press_down;
     int pwmValue = minPwm + (end_angle * (maxPwm - minPwm) / 180);
