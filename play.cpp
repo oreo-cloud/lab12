@@ -28,8 +28,8 @@ const int minPwm = 50;  // 對應 1ms 脈寬（50）
 const int maxPwm = 250; // 對應 2ms 脈寬（250）
 
 void Press() {
-    int start_angle = press_up;
-    int end_angle = press_down;
+    int start_angle = key_up;
+    int end_angle = key_down;
     int pwmValue = minPwm + (end_angle * (maxPwm - minPwm) / 180);
     pwmWrite(motor, pwmValue);
     delay(100);
